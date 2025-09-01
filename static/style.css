@@ -1,0 +1,293 @@
+/* GENEL GÖRÜNÜM */
+body {
+    background: linear-gradient(to right, #ebf9ff, #079caf);
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding-top: 100px;
+    color: #333;
+}
+
+/* BAŞLIKLAR */
+h1 {
+    font-size: 2em;
+    color: #444;
+}
+
+/* BUTONLAR */
+button, a.button {
+    background-color: #ff6f61;
+    color: white;
+    padding: 12px 24px;
+    margin: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.3s ease;
+}
+
+button:hover, a.button:hover {
+    background-color: #ff3d2e;
+}
+
+/* FORM ELEMANLARI */
+input[type="text"] {
+    padding: 10px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    margin: 10px;
+    width: 60%;
+    max-width: 300px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.button-group {
+    margin-top: 40px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #fff;
+    color: #333;
+    padding: 15px 30px;
+    margin: 10px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}
+
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(7, 40px);
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.heat-cell {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  transition: transform 0.2s;
+}
+.heat-cell:hover {
+  transform: scale(1.1);
+}
+.guide-card {
+    background-color: #fefefe;
+    border-left: 5px solid #3498db;
+    padding: 15px;
+    margin: 15px auto;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.mood-option {
+        display: inline;       /* Alt alta dizmek için */
+        margin-bottom: 10px;   /* Checkboxlar arası boşluk */
+}
+
+.mood-category {
+    border-radius: 45px;
+    padding: 10px;
+    margin-bottom: 15px;
+    color: white; /* Yazı rengi kontrast olsun diye beyaz */
+}
+.mood-box {
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    color: white;
+}
+
+.mood-box h4 {
+    margin-bottom: 10px;
+}
+
+.mood-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.mood-checkbox input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid white;
+    border-radius: 5px;
+    margin-right: 8px;
+    cursor: pointer;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.mood-checkbox input[type="checkbox"]:checked {
+    background-color: white;
+    border-color: white;
+}
+
+.mood-checkbox input[type="checkbox"]:checked + span {
+    text-decoration: underline;
+}
+
+.heatmap {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);  /* 7 sütun */
+    grid-template-rows: repeat(4, 1fr);     /* 4 satır */
+    gap: 1px;
+    max-width: 200px;
+    margin: 20px auto;
+    grid-auto-rows: 1fr;
+    overflow: visible;
+}
+
+.heat-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  white-space: pre-wrap;
+  text-align: center;
+  padding: 4px;
+  border: 1px solid #ddd;
+  width: 50px;
+  height: 50px;
+  margin: 0.5px;
+  transition: transform 0.2s ease;
+}
+
+.heat-cell.today-cell {
+  position: relative;        /* gerekirse z-index için */
+  border: 2px solid #ff0000; 
+  box-shadow: 0 0 4px #af010199;
+}
+/* İçteki metni gizle */
+.heat-cell .mood-text {
+  display: none;
+}
+
+/* Overlay’daki büyük hücre */
+.active-big-cell {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Overlay modundayken metni göster */
+.active-big-cell .mood-text {
+  display: block;
+  white-space: pre-wrap;
+  font-size: 48px; /* istersen büyüt */
+  color: #000;     /* kontrast için uygun renk */
+}
+.heat-cell:hover {
+     transform: scale(1.2);
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+.mood-name {
+  font-weight: bold;
+}
+.intensity {
+  font-style: italic;
+  margin-left: 5px;
+}
+.color-box {
+  margin-left: 10px;
+  border: 1px solid #999;
+}
+.containers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* Overlay arkaplanı */
+#heatmapOverlay {
+  position: fixed;
+  inset: 0;                       /* top:0; right:0; bottom:0; left:0; */
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  animation: fadeInOverlay 0.3s ease forwards;
+}
+
+/* Overlay içindeki ısı hücresi (büyük) */
+#heatmapOverlay .heat-cell {
+  width: 650px;                   /* büyütülmüş boyut */
+  height: 550px;
+  margin: 0;
+  transition: none;               /* orijinal küçültme skalasını iptal */
+  transform: none;
+  box-shadow: 0 0 12px rgba(0,0,0,0.6);
+  border-radius: 4px;
+  animation: scaleUp 0.3s ease 0.1s forwards;
+}
+#heat-cell.scale-in {
+  animation: scaleUp 0.25s ease forwards;
+}
+#heatmapOverlay .heat-cell.scale-out {
+  animation: scaleDown 0.25s ease forwards;
+}
+/* Kapatma butonu */
+#heatmapOverlay .close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #b90101;
+  border: none;
+  padding: 6px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+/* Keyframes */
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeOutOverlay {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0); }
+  to   { transform: scale(1); }
+}
+
+@keyframes scaleDown {
+  from { transform: scale(1); }
+  to   { transform: scale(0); }
+}
+/* Overlay kapanırken fade-out */
+#heatmapOverlay.fade-out {
+  animation: fadeOutOverlay 0.25s ease forwards;
+}
+.active-big-cell.scale-out {
+  animation: scaleOut 0.25s ease forwards;
+}

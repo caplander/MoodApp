@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#4caf50">
+    <meta charset="UTF-8">
+    <title>Rehberler</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Merhaba {{username}} 👋</h1>
+    <h2>Destekleyici Rehberler</h2>
+
+    <div class="guide-card">
+        <h3>🧘 Stresle Başa Çıkma Yöntemleri</h3>
+        <p>Nefes egzersizleri, yürüyüş, müzik dinleme gibi yöntemlerle stresini hafifletebilirsin.</p>
+    </div>
+
+    <div class="guide-card">
+        <h3>😴 Kaliteli Uyku İçin İpuçları</h3>
+        <p>Yatmadan önce ekran süresini azaltmak, odanı karartmak ve rutine uymak önemli.</p>
+    </div>
+
+    <div class="guide-card">
+        <h3>🌈 Duygularını İfade Etmenin Önemi</h3>
+        <p>Yazmak, çizmek veya biriyle konuşmak, duygularını anlamanı kolaylaştırır.</p>
+    </div>
+
+    <a class="button" href="/">Anasayfa</a>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang ="tr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#4caf50">
+    <meta charset ="UTF-8">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+         {% if username %}
+    <h1>Bugün nasılsın, {{username}}?</h1>
+    {% else %}
+    <h1>Bugün nasılsın, Misafir?</h1>
+    {% endif %}
+<div class="button-group">
+            <a href="/mood" class="btn">Mood Gir</a>
+            <a href="/profile" class="btn">Profilim</a>
+            <a href="/guides" class="btn">Genel Rehberler</a>
+        </div>
+    </div>
+</body>
+</html>

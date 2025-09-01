@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang = "tr">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <meta name="theme-color" content="#4caf50">
+    <meta charset="UTF-8">
+    <title>Mood Girişi</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class = "container">
+    {% if username %}
+    <h1 style="color: #2c3e50; font-size: 24px; margin-top: 20px;">Bugünkü ruh halin nasıl, {{username}}?</h1>
+    {% else %}
+    <h1 style="color: #2c3e50; font-size: 24px; margin-top: 20px;">Bugünkü ruh halin nasıl, Misafir?</h1>
+    {% endif %}
+    </div>
+
+    <!-- FORM BAŞLANGIÇ -->
+    <form method="post" action="/mood" id="mood-form">
+  <label style="color: #2c3e50; font-size: 18px; margin-top: 20px;" for="mood">
+     <input type="hidden" name="moods" id="selected-moods">
+
+  <!-- STEP KONTEYNERİ: JS ile doldurulacak -->
+        <div id="step-container"></div>
+
+        <!-- İleri-Geri Butonları -->
+        <div style="margin-top: 20px;">
+            <button type="button" id="prev-btn" onclick="prevStep()">Geri</button>
+            <button type="button" id="next-btn" onclick="nextStep()">İleri</button>
+            <button type="submit">Gönder</button>
+        </div>
+    </form>
+    <!-- FORM SON -->
+     
+    {% if response %}
+    <div style="margin-top: 20px;">
+        <p><strong>MoodAI Yanıtı:</strong> {{ response }}</p>
+        {% if average_color %}
+            <p><strong>Günün ruh rengi:</strong></p>
+            <div style="display:flex; justify-content: center;">
+                <div style="width: 100px; height: 100px; border-radius: 33%; background-color: {{ average_color }}; border: 1px solid #000;"></div>
+            </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <a class="button" href="/">Anasayfa</a>
+
+<script>
+        const moodCategories = {
+            "pozitif": {
+                baseColor: ["#A5D6A7", "#4CAF50", "#1B5E20"],
+                moods: ["Mutlu", "Huzurlu", "Rahat", "Minnettar", "Umutlu", "Coşkulu", "İlham almış", "Sevilmiş"]
+            },
+            "nötr": {
+                baseColor: ["#90CAF9", "#2196F3", "#0D47A1"],
+                moods: ["Sıkılmış", "Boşlukta", "Kararsız", "Alakasız", "Dalgın", "Duyarsız", "Durgun", "Yorgun"]
+            },
+            "melankolik": {
+                baseColor: ["#CE93D8", "#9C27B0", "#4A148C"],
+                moods: ["Hüzünlü", "İçine kapanık", "Özlem dolu", "Yalnız", "Kırgın", "Hayal kırıklığına uğramış", "Umutsuz", "Değersiz hissetmek"]
+            },
+            "stresli": {
+                baseColor: ["#EF9A9A", "#F44336", "#B71C1C"],
+                moods: ["Endişeli", "Gergin", "Kızgın", "Kıskanç", "Suçlu", "Panik", "Bunalmış", "Gergin", "Kaygılı"]
+            },
+            "negatif": {
+                baseColor: ["#FFCC80", "#FFC400", "#E68A00"],
+                moods: ["Tükenmiş", "Umursamaz", "Yetersiz", "Yalnızlık içinde", "Terkedilmiş", "Çaresiz", "İnatçı", "Kapanmak isteyen"]
+            },
+            "karışık": {
+                baseColor: ["#6D6D6D", "#313131", "#000000"],
+                moods: ["Belirsiz", "Hem iyi hem kötü", "Tanımlanamayan", "Karmaşık", "Parçalanmış", "Belirsizlikten rahatsız"]
+            }
+        };
+
+        const steps = ["high", "medium", "low"];
+        let stepIndex = 0;
+
+        function renderStep() {
+            const step = steps[stepIndex];
+            const container = document.getElementById("step-container");
+            container.innerHTML = `<h3 style="margin-bottom:10px;">${
+                step === "high" ? "Yoğun hissettiğiniz duygular" 
+                : step === "medium" ? "Orta yoğunluktaki duygular" 
+                : "Hafif hissettiğiniz duygular"
+            }</h3>`;
+
+            Object.entries(moodCategories).forEach(([category, data]) => {
+                let colorIndex = step === "low" ? 0 : step === "medium" ? 1 : 2;
+                const color = data.baseColor[colorIndex];
+
+                let html = `<div style="border:1px solid #ccc; margin:10px; padding:10px; background:${color}90;">`;
+                html += `<h4>${category.toUpperCase()}</h4>`;
+
+                data.moods.forEach(mood => {
+                    const checkboxId = `${step}-${mood.replace(/\s+/g, "-")}`;
+                    html += `
+                        <label for="${checkboxId}" style="display:inline; margin:4px 0;">
+                            <input type="checkbox" id="${checkboxId}" value="${mood}" data-intensity="${step}">
+                            ${mood}
+                        </label>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function nextStep() {
+            if (stepIndex < steps.length - 1) {
+                stepIndex++;
+                renderStep();
+            }
+        }
+
+        function prevStep() {
+            if (stepIndex > 0) {
+                stepIndex--;
+                renderStep();
+            }
+        }
+
+        function collectSelectedMoods() {
+            const selected = [];
+            document.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+                selected.push(cb.value);
+            });
+            document.getElementById("selected-moods").value = selected.join(",");
+        }
+
+        document.getElementById("mood-form").addEventListener("submit", function(e) {
+            collectSelectedMoods();
+        });
+
+        // Sayfa yüklenince ilk adımı göster
+        window.onload = function() {
+            renderStep();
+        };
+    </script>
+</body>
+</html>
