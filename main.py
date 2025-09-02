@@ -10,13 +10,16 @@ import os
 
 app = Flask(__name__, instance_relative_config=True)
 DB_PATH = os.path.join(app.instance_path, "moods.db")
-
-app = Flask(__name__)
 app.secret_key = 'Milly'
 
 # --- DATABASE CONFIG ---
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///D:/moodapp_prototype/instance/moods.db'
+db_path = os.path.join(app.instance_path, "moods.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{db_path}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# instance klasörü yoksa oluştur
+os.makedirs(app.instance_path, exist_ok=True)
+
 db = SQLAlchemy()
 db.init_app(app)
 
@@ -279,4 +282,5 @@ def guides():
 
 if __name__ == "__main__": 
     app.run(debug=True)
+
 
