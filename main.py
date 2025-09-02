@@ -10,7 +10,6 @@ import os
 
 app = Flask(__name__, instance_relative_config=True)
 DB_PATH = os.path.join(app.instance_path, "moods.db")
-locale.setlocale(locale.LC_ALL, 'tr_TR.UTF-8')
 
 app = Flask(__name__)
 app.secret_key = 'Milly'
@@ -280,3 +279,4 @@ def guides():
 
 if __name__ == "__main__": 
     app.run(debug=True)
+
